@@ -32,7 +32,7 @@ export default function LoginPage() {
                 {/* Header */}
                 <div className="text-center">
                     <h2 className="text-3xl font-extrabold text-gray-900">Welcome Back</h2>
-                    <p className="mt-2 text-sm text-gray-600">Sign in to your account</p>
+                    <p className="mt-2 text-sm text-gray-600">Log in to your account</p>
                 </div>
 
                 {/* Form */}
@@ -77,7 +77,7 @@ export default function LoginPage() {
                             onClick={handleLogin}
                             className="w-full py-3 px-4 bg-green-600 text-white font-semibold rounded-lg hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition-all"
                         >
-                            Sign In
+                            Log In
                         </button>
                     </div>
                 </form>

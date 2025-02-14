@@ -101,25 +101,27 @@ app.post('/api/sell', authMiddleware, async (req, res) => {
 });
 
 app.get("/api/buy", authMiddleware, async (req, res) => {
-    try {
-        const { crop, quantity } = req.query;
-  
-        const parsedQuantity = parseInt(quantity, 10);
-        if (isNaN(parsedQuantity)) {
-            return res.status(400).json({ error: "Invalid quantity parameter. Must be a number." });
-        }
-  
-        const sellers = await Seller.find({
-            crop,
-            quantity: { $gte: parsedQuantity }
-        }).populate("user_id", "name phone address");
+  try {
+      const { crop, quantity } = req.query;
 
-        res.status(200).json(sellers);
-    } catch (error) {
-        console.error("Error fetching sellers:", error);
-        res.status(500).json({ error: "Database Fetching Failed" });
-    }
+      const parsedQuantity = parseInt(quantity, 10);
+      if (isNaN(parsedQuantity)) {
+          return res.status(400).json({ error: "Invalid quantity parameter. Must be a number." });
+      }
+
+      // Use a case-insensitive regex for partial matching
+      const sellers = await Seller.find({
+          crop: { $regex: crop, $options: "i" }, // Case-insensitive search
+          quantity: { $gte: parsedQuantity }
+      }).populate("user_id", "name phone address");
+
+      res.status(200).json(sellers);
+  } catch (error) {
+      console.error("Error fetching sellers:", error);
+      res.status(500).json({ error: "Database Fetching Failed" });
+  }
 });
+
 
 app.get("/api/details", async (req, res) => {
   try {
@@ -199,5 +201,21 @@ app.post("/api/login", async (req, res) => {
   }
 });
 
+app.post("/api/cart",async(req,res)=>{
+  try {
+    const { id, quantity } = req.body;
+    const seller = await Seller.findById(id);
+    if (!seller) {
+      return res.status(404).json({ error: "Seller not found" });
+    }
+    seller.quantity -= quantity;
+    await seller.save();
+    res.status(200).json({ message: "Crop bought successfully!" });
+  }catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal server error!" });
+    }
+  }
+)
 const PORT = 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

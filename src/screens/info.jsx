@@ -24,7 +24,7 @@ export default function InfoPage() {
     };
 
     return (
-        <div className="min-h-screen bg-slate-900 py-12 px-4 sm:px-6 lg:px-8">
+        <div className="min-h-screen bg-gradient-to-br from-blue-50 to-green-50-900 py-12 px-4 sm:px-6 lg:px-8">
             <div className="max-w-4xl mx-auto bg-white rounded-xl shadow-2xl overflow-hidden">
                 {/* Header Section */}
                 <div className="bg-slate-600 p-6">

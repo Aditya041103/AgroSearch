@@ -32,7 +32,7 @@ const SchemePage = () => {
           {schemes.map((scheme) => (
             <tr key={scheme._id} className="bg-gray-50 hover:bg-gray-100 transition-colors">
               <td className="p-3 border border-gray-200 text-center">{scheme.name}</td>
-              <td className="p-3 border border-gray-200 text-center">{scheme.description}</td>
+              <td className="p-3 border border-gray-200 text-left">{scheme.description}</td>
               <td className="p-3 border border-gray-200 text-center">
                 <a
                   href={scheme.link}
@@ -43,7 +43,7 @@ const SchemePage = () => {
                   Link
                 </a>
               </td>
-              <td className="p-3 border border-gray-200 text-center">
+              <td className="p-3 border border-gray-200 text-left">
                 <ul>
                   {Object.entries(scheme.language).map(([lang, url]) => (
                     <li key={lang}>
