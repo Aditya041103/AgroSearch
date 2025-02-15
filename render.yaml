@@ -1,0 +1,39 @@
+services:
+  # Vite Frontend Deployment
+  - type: web
+    name: vite-frontend
+    runtime: node
+    env: node
+    plan: free
+    buildCommand: "npm install && npm run build"
+    startCommand: "npm run preview"
+    rootDir: frontend  # Change this if your frontend is in a different folder
+    envVars:
+      - key: VITE_API_URL
+        value: "https://your-backend.onrender.com"
+
+  # Node.js Backend Deployment
+  - type: web
+    name: node-backend
+    runtime: node
+    env: node
+    plan: free
+    buildCommand: "npm install"
+    startCommand: "node server.js"
+    envVars:
+      - key: PORT
+        value: "5000"
+
+  # Flask API Deployment
+  - type: web
+    name: flask-backend
+    runtime: python
+    env: python
+    plan: free
+    buildCommand: "pip install -r requirements.txt"
+    startCommand: "gunicorn app:app"
+    envVars:
+      - key: FLASK_ENV
+        value: "production"
+      - key: PORT
+        value: "8000"
