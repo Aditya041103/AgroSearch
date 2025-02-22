@@ -57,7 +57,7 @@ export default function MarketPage() {
   return (
     <Routes>
       <Route path="/" element={<HomePage />} />
-      <Route path="login" element={<LoginPage />} />
+      <Route path="/login" element={<LoginPage />} />
       <Route path="/seller" element={<SellerPage />} />
       <Route path="/buyer" element={<BuyerPage />} />
     </Routes>
