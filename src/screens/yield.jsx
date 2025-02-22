@@ -10,7 +10,7 @@ export default function YieldPrediction() {
     area: "",
     annualRainfall: "",
     fertilizer: "",
-    pesticide: "",
+    pesticide: ""
   });
 
   const [prediction, setPrediction] = useState(null);
@@ -22,7 +22,10 @@ export default function YieldPrediction() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post("http://localhost:8000/api/predict", formData);
+      const response = await axios.post(
+        "https://agrosearch-yield-model.onrender.com/api/predict",
+        formData
+      );
       setPrediction(response.data.prediction);
     } catch (error) {
       console.error("Error fetching prediction:", error);
