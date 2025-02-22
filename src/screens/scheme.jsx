@@ -6,13 +6,17 @@ const SchemePage = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:5000/api/schemes") // Adjust URL as needed
+      .get("https://agrosearch-backend.onrender.com/api/schemes") // Adjust URL as needed
       .then((response) => setSchemes(response.data))
       .catch((error) => console.error("Error fetching data:", error));
   }, []);
 
   if (schemes.length === 0)
-    return <p className="text-lg text-gray-600 text-center mt-20">Loading schemes...</p>;
+    return (
+      <p className="text-lg text-gray-600 text-center mt-20">
+        Loading schemes...
+      </p>
+    );
 
   return (
     <div className="max-w-4xl mx-auto my-10 p-6 bg-white rounded-xl shadow-lg">
@@ -30,9 +34,16 @@ const SchemePage = () => {
         </thead>
         <tbody>
           {schemes.map((scheme) => (
-            <tr key={scheme._id} className="bg-gray-50 hover:bg-gray-100 transition-colors">
-              <td className="p-3 border border-gray-200 text-center">{scheme.name}</td>
-              <td className="p-3 border border-gray-200 text-left">{scheme.description}</td>
+            <tr
+              key={scheme._id}
+              className="bg-gray-50 hover:bg-gray-100 transition-colors"
+            >
+              <td className="p-3 border border-gray-200 text-center">
+                {scheme.name}
+              </td>
+              <td className="p-3 border border-gray-200 text-left">
+                {scheme.description}
+              </td>
               <td className="p-3 border border-gray-200 text-center">
                 <a
                   href={scheme.link}

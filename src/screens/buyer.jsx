@@ -18,13 +18,16 @@ function BuyerPage() {
 
     try {
       setError(null);
-      const response = await axios.get("http://localhost:5000/api/buy", {
-        params: {
-          crop: searchData.crop,
-          quantity: Number(searchData.quantity),
-        },
-        withCredentials: true,
-      });
+      const response = await axios.get(
+        "https://agrosearch-backend.onrender.com/api/buy",
+        {
+          params: {
+            crop: searchData.crop,
+            quantity: Number(searchData.quantity)
+          },
+          withCredentials: true
+        }
+      );
       setSellers(response.data);
     } catch (error) {
       console.error("Error fetching sellers:", error);
@@ -35,7 +38,7 @@ function BuyerPage() {
   const handleBuy = async (id, quantity) => {
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/cart",
+        "https://agrosearch-backend.onrender.com/api/cart",
         { id, quantity },
         { withCredentials: true }
       );

@@ -8,7 +8,7 @@ export default function SignupPage() {
     phone: "",
     address: "",
     email: "",
-    password: "",
+    password: ""
   });
   const navigate = useNavigate();
 
@@ -18,9 +18,13 @@ export default function SignupPage() {
 
   const handleSignup = async () => {
     try {
-      await axios.post("http://localhost:5000/api/signup", userData, {
-        headers: { "Content-Type": "application/json" },
-      });
+      await axios.post(
+        "https://agrosearch-backend.onrender.com/api/signup",
+        userData,
+        {
+          headers: { "Content-Type": "application/json" }
+        }
+      );
       alert("Signup successful! Please log in.");
       navigate("/login");
     } catch (error) {

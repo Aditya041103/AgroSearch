@@ -16,11 +16,11 @@ function SellerPage() {
   const handleSubmit = async () => {
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/sell",
+        "https://agrosearch-backend.onrender.com/api/sell",
         {
           ...formData,
           quantity: Number(formData.quantity), // Convert to number
-          price: Number(formData.price), // Convert to number
+          price: Number(formData.price) // Convert to number
         },
         { withCredentials: true }
       );
@@ -34,7 +34,9 @@ function SellerPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-green-50 flex items-center justify-center">
       <div className="bg-white rounded-2xl shadow-2xl p-8 max-w-md w-full">
-        <h2 className="text-3xl font-bold text-gray-900 mb-6 text-center">Sell a Crop</h2>
+        <h2 className="text-3xl font-bold text-gray-900 mb-6 text-center">
+          Sell a Crop
+        </h2>
         <form className="space-y-4">
           <input
             name="crop"
@@ -75,4 +77,4 @@ function SellerPage() {
     </div>
   );
 }
- export {SellerPage};
+export { SellerPage };
