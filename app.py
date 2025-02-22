@@ -7,7 +7,7 @@ app = Flask(__name__)
 CORS(app)  # Enable CORS for all routes
 
 # Load the trained model
-model = joblib.load("yield_model.pkl")  # Ensure this file exists
+model = joblib.load("yield_model_compressed.pkl")  # Ensure this file exists
 
 @app.route("/api/predict", methods=["POST"])
 def predict():
