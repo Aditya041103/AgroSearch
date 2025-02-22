@@ -14,6 +14,7 @@ export default function YieldPrediction() {
   });
 
   const [prediction, setPrediction] = useState(null);
+  const [error, setError] = useState(null);  // To store any error messages
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -21,6 +22,21 @@ export default function YieldPrediction() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError(null);  // Reset error before submitting
+
+    // Ensure all numeric fields are numbers before submitting
+    const { cropYear, area, annualRainfall, fertilizer, pesticide } = formData;
+    if (
+      isNaN(cropYear) ||
+      isNaN(area) ||
+      isNaN(annualRainfall) ||
+      isNaN(fertilizer) ||
+      isNaN(pesticide)
+    ) {
+      setError("Please ensure all numeric fields are correctly filled.");
+      return;
+    }
+
     try {
       const response = await axios.post(
         "https://agrosearch-yield-model.onrender.com/api/predict",
@@ -29,6 +45,7 @@ export default function YieldPrediction() {
       setPrediction(response.data.prediction);
     } catch (error) {
       console.error("Error fetching prediction:", error);
+      setError("An error occurred while fetching the prediction.");
     }
   };
 
@@ -62,6 +79,13 @@ export default function YieldPrediction() {
               </div>
             ))}
           </div>
+
+          {/* Error Message */}
+          {error && (
+            <div className="mt-4 p-4 bg-red-100 border-l-4 border-red-600 text-red-800 rounded-lg">
+              <p>{error}</p>
+            </div>
+          )}
 
           {/* Predict Button */}
           <button
