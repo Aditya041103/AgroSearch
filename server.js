@@ -196,7 +196,11 @@ app.post("/api/login", async (req, res) => {
       return res.status(401).json({ error: "Invalid credentials" });
     }
 
-    res.cookie("id", user._id);
+    res.cookie("id", user._id,{
+      httpOnly: true,
+      secure: true,  // Must be true if using HTTPS
+      sameSite: "None"
+    });
 
     res.status(200).json({ message: "Login successful" });
   } catch (error) {

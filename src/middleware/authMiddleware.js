@@ -2,7 +2,7 @@ import cookieParser from "cookie-parser";
 import jwt from "jsonwebtoken";
 
 const authMiddleware = (req, res, next) => {
-  const token = req.cookies.id; // Assuming you're using cookies
+  const token = req.cookies.id; 
   if (!token) return res.status(401).json({ message: "Unauthorized" });
 
   try {
