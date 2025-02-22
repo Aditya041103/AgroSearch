@@ -27,5 +27,4 @@ dist-ssr
 .env
 
 #Models
-.pkl
 *.pkl
