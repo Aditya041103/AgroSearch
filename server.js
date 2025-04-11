@@ -16,7 +16,7 @@ const app = express();
 
 // ✅ CORS middleware must come before other middlewares
 app.use(cors({
-  origin: "https://agrosearch.onrender.com",
+  origin: '*',
   credentials: true
 }));
 
