@@ -6,6 +6,8 @@ import cookieParser from "cookie-parser";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import authMiddleware from "./src/middleware/authMiddleware.js"; // Ensure correct file extension (.js)
+import Razorpay from "razorpay";
+import bodyParser from "body-parser";
 
 // Load environment variables
 dotenv.config();
@@ -77,6 +79,27 @@ const sellerSchema = new mongoose.Schema({
   user_id: { type: mongoose.Schema.Types.ObjectId, ref: "User" } // Reference to User
 });
 const Seller = mongoose.model("Seller", sellerSchema);
+
+const razorpay = new Razorpay({
+  key_id: process.env.RAZORPAY_KEY_ID,
+  key_secret: process.env.RAZORPAY_KEY_SECRET,
+});
+
+app.post("/api/create-order", async (req, res) => {
+  try {
+    const { amount } = req.body;
+    const options = {
+      amount: amount * 100, // Convert to paise
+      currency: "INR",
+      receipt: `receipt_${Date.now()}`,
+    };
+
+    const order = await razorpay.orders.create(options);
+    res.json({ success: true, order });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+});
 
 app.post("/api/sell", authMiddleware, async (req, res) => {
   const { crop, quantity, price, description } = req.body;
@@ -196,12 +219,8 @@ app.post("/api/login", async (req, res) => {
       return res.status(401).json({ error: "Invalid credentials" });
     }
 
-    res.cookie("id", user._id,{
-      httpOnly: true,
-      secure: true,  // Must be true if using HTTPS
-      sameSite: "None"
-    });
-
+    res.cookie("id", user._id);
+    res.cookie("name", user.name);
     res.status(200).json({ message: "Login successful" });
   } catch (error) {
     console.error("Login error:", error);

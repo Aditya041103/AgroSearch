@@ -8,7 +8,7 @@ function SellerPage() {
     price: "",
     description: ""
   });
-
+  const crops = ["Wheat", "Rice", "Corn", "Barley", "Oats"]; 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
@@ -38,13 +38,19 @@ function SellerPage() {
           Sell a Crop
         </h2>
         <form className="space-y-4">
-          <input
-            name="crop"
-            placeholder="Crop Name"
-            value={formData.crop}
-            onChange={handleChange}
-            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
-          />
+            <select
+              name="crop"
+              value={formData.crop}
+              onChange={handleChange}
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+            >
+              <option value="" disabled>Select a crop</option>
+              {crops.map((crop, index) => (
+                <option key={index} value={crop}>
+                  {crop}
+                </option>
+              ))}
+            </select>
           <input
             name="quantity"
             placeholder="Quantity"

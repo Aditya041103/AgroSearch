@@ -13,8 +13,12 @@ export default function YieldPrediction() {
     pesticide: ""
   });
 
+  const crops = ["Wheat", "Rice", "Corn", "Barley", "Oats"];
+  const seasons=["Kharif","Rabi","Zaid"];
+  const states = ["Andhra Pradesh", "Arunachal Pradesh", "Assam", "Bihar", "Chhattisgarh", "Goa", "Gujarat", "Haryana", "Himachal Pradesh", "Jharkhand", "Karnataka", "Kerala", "Madhya Pradesh", "Maharashtra", "Manipur", "Meghalaya", "Mizoram", "Nagaland", "Odisha", "Punjab", "Rajasthan", "Sikkim", "Tamil Nadu", "Telangana", "Tripura", "Uttar Pradesh", "Uttarakhand", "West Bengal", "Andaman and Nicobar Islands", "Chandigarh", "Dadra and Nagar Haveli and Daman and Diu", "Lakshadweep", "Delhi", "Puducherry", "Ladakh", "Jammu and Kashmir"];
+  
   const [prediction, setPrediction] = useState(null);
-  const [error, setError] = useState(null);  // To store any error messages
+  const [error, setError] = useState(null); // To store any error messages
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -22,7 +26,7 @@ export default function YieldPrediction() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError(null);  // Reset error before submitting
+    setError(null); // Reset error before submitting
 
     // Ensure all numeric fields are numbers before submitting
     const { cropYear, area, annualRainfall, fertilizer, pesticide } = formData;
@@ -68,14 +72,59 @@ export default function YieldPrediction() {
                     .trim()
                     .replace(/^\w/, (c) => c.toUpperCase())}
                 </label>
-                <input
-                  type="text"
-                  name={key}
-                  value={formData[key]}
-                  onChange={handleChange}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
-                  required
-                />
+
+                {key === "crop" ? (
+                  <select
+                    name="crop"
+                    value={formData.crop}
+                    onChange={handleChange}
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+                  >
+                    <option value="" disabled>Select a crop</option>
+                    {crops.map((crop, index) => (
+                      <option key={index} value={crop}>
+                        {crop}
+                      </option>
+                    ))}
+                  </select>
+                ) : key === "season" ? (
+                  <select
+                    name="season"
+                    value={formData.season}
+                    onChange={handleChange}
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+                  >
+                    <option value="" disabled>Select a season</option>
+                    {seasons.map((season, index) => (
+                      <option key={index} value={season}>
+                        {season}
+                      </option>
+                    ))}
+                  </select>
+                ): key === "state" ? (
+                  <select
+                    name="state"
+                    value={formData.state}
+                    onChange={handleChange}
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+                  >
+                    <option value="" disabled>Select a state</option>
+                    {states.map((state, index) => (
+                      <option key={index} value={state}>
+                        {state}
+                      </option>
+                    ))}
+                  </select>
+                ): (
+                  <input
+                    type="text"
+                    name={key}
+                    value={formData[key]}
+                    onChange={handleChange}
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+                    required
+                  />
+                )}
               </div>
             ))}
           </div>

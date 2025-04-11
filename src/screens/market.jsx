@@ -20,17 +20,17 @@ export function HomePage() {
       })
       .catch((error) => {
         console.error("Auth check failed:", error); // Debug log
-        navigate("/login");
+        // navigate("/market/login");
       });
   }, [navigate]);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-green-50 flex items-center justify-center">
-      <div className="bg-white rounded-2xl shadow-2xl p-8 max-w-md w-full text-center">
-        <h2 className="text-3xl font-bold text-gray-900 mb-6">
-          Are you a Buyer or a Seller?
-        </h2>
-        {isAuthenticated ? (
+    isAuthenticated ? (
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-green-50 flex items-center justify-center">
+        <div className="bg-white rounded-2xl shadow-2xl p-8 max-w-md w-full text-center">
+          <h2 className="text-3xl font-bold text-gray-900 mb-6">
+            Are you a Buyer or a Seller?
+          </h2>
           <div className="space-y-4">
             <button
               onClick={() => navigate("/market/seller")}
@@ -45,14 +45,23 @@ export function HomePage() {
               Buyer
             </button>
           </div>
-        ) : (
-          <p className="text-gray-600">Redirecting to login...</p>
-        )}
+        </div>
       </div>
-    </div>
+    ) : (
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-green-50 flex items-center justify-center">
+        <div className="bg-white rounded-2xl shadow-2xl p-8 max-w-md w-full text-center">
+          <p className="text-gray-600">You need to login</p>
+          <button
+            onClick={() => navigate("/login")}
+            className="w-full py-3 px-6 bg-green-600 text-white font-semibold rounded-lg hover:bg-green-700 transition-colors"
+          >
+            Login
+          </button>
+        </div>
+      </div>
+    )
   );
 }
-
 export default function MarketPage() {
   return (
     <Routes>

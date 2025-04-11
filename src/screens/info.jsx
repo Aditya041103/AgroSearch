@@ -4,6 +4,7 @@ import axios from "axios";
 export default function InfoPage() {
   const [cropName, setCropName] = useState("");
   const [data, setData] = useState({});
+  const crops = ["Wheat", "Rice", "Corn", "Barley", "Oats"]; 
 
   const handleSubmit = async () => {
     if (!cropName.trim()) {
@@ -39,13 +40,19 @@ export default function InfoPage() {
         {/* Input Section */}
         <div className="p-8">
           <div className="flex flex-col sm:flex-row gap-4">
-            <input
-              className="flex-grow p-3 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-green-500 transition-colors text-lg"
+            <select
               name="crop"
-              placeholder="Enter Crop Name"
-              value={cropName}
+              value={data.crop}
               onChange={handleChange}
-            />
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+            >
+              <option value="" disabled>Select a crop</option>
+              {crops.map((crop, index) => (
+                <option key={index} value={crop}>
+                  {crop}
+                </option>
+              ))}
+            </select>
             <button
               className="px-8 py-3 bg-green-600 text-white font-semibold rounded-lg hover:bg-green-700 transition-colors"
               onClick={handleSubmit}
