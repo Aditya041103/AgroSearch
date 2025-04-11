@@ -129,7 +129,6 @@ app.post("/api/sell", authMiddleware, async (req, res) => {
 app.get("/api/buy", authMiddleware, async (req, res) => {
   try {
     const { crop, quantity } = req.query;
-
     const parsedQuantity = parseInt(quantity, 10);
     if (isNaN(parsedQuantity)) {
       return res
@@ -219,8 +218,17 @@ app.post("/api/login", async (req, res) => {
       return res.status(401).json({ error: "Invalid credentials" });
     }
 
-    res.cookie("id", user._id);
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+      expiresIn: "1d",
+    });
+    
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: true,
+      sameSite: "None", // if frontend is hosted separately
+    });
     res.cookie("name", user.name);
+    res.status(200).json({ message: "Login successful" });
     res.status(200).json({ message: "Login successful" });
   } catch (error) {
     console.error("Login error:", error);

@@ -1,16 +1,19 @@
-import cookieParser from "cookie-parser";
 import jwt from "jsonwebtoken";
 
 const authMiddleware = (req, res, next) => {
-  const token = req.cookies.id; 
-  if (!token) return res.status(401).json({ message: "Unauthorized" });
+  const token = req.cookies.token; // expecting a signed token now
+
+  if (!token) {
+    return res.status(401).json({ message: "Unauthorized: No token" });
+  }
 
   try {
-    req.user = token; // Ensure this is the correct field
+    const decoded = jwt.verify(token, process.env.JWT_SECRET); // verify token
+    req.user = decoded.id; // attach the user id from token payload
     next();
   } catch (error) {
-    res.status(401).json({ message: "Invalid token" });
-    console.log(error);
+    console.error("Token verification failed:", error.message);
+    return res.status(401).json({ message: "Unauthorized: Invalid token" });
   }
 };
 
