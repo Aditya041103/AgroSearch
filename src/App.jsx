@@ -7,8 +7,19 @@ import InfoPage from "./screens/info.jsx";
 import YieldPrediction from "./screens/yield.jsx";
 import SchemePage from "./screens/scheme.jsx";
 
+function getName(name) {
+  const value = `; ${document.cookie}`;
+  const parts = value.split(`; ${name}=`);
+  if (parts.length === 2) {
+    const decodedValue = decodeURIComponent(parts.pop().split(';').shift());
+    return decodedValue.split(' ')[0]; 
+  }
+  return null; 
+}
+
+
+
 function HomePage() {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
   return (
     <div className="bg-gray-100 min-h-screen">
       {/* Navbar */}
@@ -19,26 +30,7 @@ function HomePage() {
             AgroSearch
           </Link>
 
-          {/* Hamburger Menu (Mobile) */}
-          <button
-            className="md:hidden focus:outline-none"
-            onClick={() => setIsMenuOpen(!isMenuOpen)} // Toggle menu state
-          >
-            <svg
-              className="w-6 h-6"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M4 6h16M4 12h16m-7 6h7"
-              />
-            </svg>
-          </button>
+          
 
           {/* Desktop Menu (Hidden on Mobile) */}
           <div className="hidden md:flex space-x-4 items-center font-medium">
@@ -54,38 +46,22 @@ function HomePage() {
             <Link to="/scheme" className="hover:text-green-200">
               Govt Schemes
             </Link>
-            <Link
-              to="/login"
-              className="bg-white text-green-600 px-4 py-2 rounded hover:bg-green-100"
-            >
-              Login/Signup
-            </Link>
+            <div className="p-4">
+              {getName("name") ? (
+                <p>Hi {getName("name")}</p>
+              ) : (
+                <Link
+                  to="/login"
+                  className="bg-white text-green-600 px-4 py-2 rounded hover:bg-green-100"
+                >
+                  Login/Signup
+                </Link>
+              )}
+            </div>
           </div>
         </div>
 
-        {/* Mobile Menu (Collapsible) */}
-        <div className={`md:hidden ${isMenuOpen ? "block" : "hidden"}`}>
-          <div className="flex flex-col space-y-2 mt-4">
-            <Link to="/market" className="hover:text-green-200">
-              Market
-            </Link>
-            <Link to="/info" className="hover:text-green-200">
-              Crop Info
-            </Link>
-            <Link to="/yield" className="hover:text-green-200">
-              Yield Prediction
-            </Link>
-            <Link to="/scheme" className="hover:text-green-200">
-              Govt Schemes
-            </Link>
-            <Link
-              to="/login"
-              className="bg-white text-green-600 px-4 py-2 rounded hover:bg-green-100"
-            >
-              Login/Signup
-            </Link>
-          </div>
-        </div>
+       
       </nav>
 
       {/* Hero Section */}

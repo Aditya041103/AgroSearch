@@ -1,10 +1,19 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 
 function BuyerPage() {
   const [searchData, setSearchData] = useState({ crop: "", quantity: "" });
   const [sellers, setSellers] = useState([]);
   const [error, setError] = useState(null);
+  const crops = ["Wheat", "Rice", "Corn", "Barley", "Oats"];
+
+  useEffect(() => {
+    // Load Razorpay script
+    const script = document.createElement("script");
+    script.src = "https://checkout.razorpay.com/v1/checkout.js";
+    script.async = true;
+    document.body.appendChild(script);
+  }, []);
 
   const handleSearchChange = (e) => {
     setSearchData({ ...searchData, [e.target.name]: e.target.value });
@@ -35,21 +44,42 @@ function BuyerPage() {
     }
   };
 
-  const handleBuy = async (id, quantity) => {
+  const handlePayment = async (seller) => {
     try {
-      const response = await axios.post(
-        "https://agrosearch-backend.onrender.com/api/cart",
-        { id, quantity },
+      const amount = seller.price * searchData.quantity; // Calculate total price
+
+      // Create order on backend
+      const orderResponse = await axios.post(
+        "http://localhost:5000/api/create-order",
+        { amount },
         { withCredentials: true }
       );
-      if (response.status === 200) {
-        alert("Crop bought successfully!");
-        // Optionally, refresh the sellers list after a successful purchase
-        handleSearch();
-      }
+
+      const { order } = orderResponse.data;
+
+      const options = {
+        key: "rzp_live_yGYfFddFxJR1UQ", // Replace with your Razorpay Key ID
+        amount: order.amount,
+        currency: order.currency,
+        name: "AgroSearch",
+        description: `Purchase of ${seller.crop}`,
+        order_id: order.id,
+        handler: async (response) => {
+          // Payment success handler
+          await axios.post(
+            "http://localhost:5000/api/cart",
+            { id: seller._id, quantity: searchData.quantity },
+            { withCredentials: true }
+          );
+          alert("Payment successful! Crop bought successfully.");
+        }
+      };
+
+      const rzp = new window.Razorpay(options);
+      rzp.open();
     } catch (error) {
-      console.error("Unable to Buy", error);
-      alert("Failed to buy the crop. Please try again.");
+      console.error("Payment Failed:", error);
+      alert("Payment failed. Please try again.");
     }
   };
 
@@ -60,21 +90,32 @@ function BuyerPage() {
           Search for a Crop
         </h2>
         <div className="flex flex-col sm:flex-row gap-4 mb-6">
-          <input
+          <select
             name="crop"
-            placeholder="Crop Name"
             value={searchData.crop}
             onChange={handleSearchChange}
             className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
-          />
+          >
+            <option value="" disabled>
+              Select a crop
+            </option>
+            {crops.map((crop, index) => (
+              <option key={index} value={crop}>
+                {crop}
+              </option>
+            ))}
+          </select>
+          <div className="flex items-center">
           <input
             name="quantity"
-            placeholder="Quantity"
-            type="number"
-            value={searchData.quantity}
+            placeholder="Quantity (Kg)"
+            type="text" // Use text input to allow 'Kg' as part of the value
+            value={searchData.quantity} // Append Kg to the value displayed in the input
             onChange={handleSearchChange}
             className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
           />
+          </div>
+
           <button
             onClick={handleSearch}
             className="w-full sm:w-auto py-3 px-6 bg-green-600 text-white font-semibold rounded-lg hover:bg-green-700 transition-colors"
@@ -105,7 +146,6 @@ function BuyerPage() {
             {sellers.map((seller, index) => (
               <li key={index} className="bg-gray-50 p-4 rounded-lg shadow-sm">
                 <div className="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow duration-300">
-                  {/* Seller Details */}
                   <div className="space-y-2">
                     <p className="text-lg font-semibold text-gray-800">
                       <span className="text-green-600">👤</span>{" "}
@@ -121,10 +161,7 @@ function BuyerPage() {
                     </p>
                   </div>
 
-                  {/* Divider */}
                   <hr className="my-4 border-gray-200" />
-
-                  {/* Crop Details */}
                   <div className="space-y-2">
                     <p className="text-lg font-semibold text-gray-800">
                       <span className="text-green-600">🌾</span> {seller.crop}
@@ -135,13 +172,12 @@ function BuyerPage() {
                     </p>
                     <p className="text-sm text-gray-600">
                       <span className="text-green-600">💰</span> ₹
-                      {seller.price || "N/A"}
+                      {seller.price || "N/A"}/Kg
                     </p>
                   </div>
 
-                  {/* Call to Action Button */}
                   <button
-                    onClick={() => handleBuy(seller._id, searchData.quantity)}
+                    onClick={() => handlePayment(seller)}
                     className="mt-6 w-full bg-green-600 text-white py-2 px-4 rounded-lg hover:bg-green-700 transition-colors duration-300"
                   >
                     Buy Now
