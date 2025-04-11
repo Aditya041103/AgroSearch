@@ -12,7 +12,7 @@ const PaymentComponent = ({ amount }) => {
   }, []);
 
   const handlePayment = async () => {
-    const response = await fetch("http://localhost:5000/create-order", {
+    const response = await fetch("https://agrosearch-backend.onrender.com/api/create-order", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ amount, currency: "INR" }),
