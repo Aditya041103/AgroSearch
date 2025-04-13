@@ -50,7 +50,7 @@ function BuyerPage() {
 
       // Create order on backend
       const orderResponse = await axios.post(
-        "http://localhost:5000/api/create-order",
+        "https://agrosearch-backend.onrender.com/api/create-order",
         { amount },
         { withCredentials: true }
       );
