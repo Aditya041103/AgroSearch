@@ -10,7 +10,7 @@ export default function DiseasePrediction() {
     data.append("image", image);
 
     try {
-      const response = await fetch("http://localhost:8000/api/predict-disease", {
+      const response = await fetch(`${import.meta.env.VITE_MODEL_URL}/api/predict-disease`, {
         method: "POST",
         body: data,
       });

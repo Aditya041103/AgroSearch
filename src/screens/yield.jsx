@@ -29,7 +29,7 @@ export default function YieldPrediction() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await fetch("http://localhost:8000/api/predict-yield", {
+      const res = await fetch(`${import.meta.env.VITE_MODEL_URL}/api/predict-yield`, {
         method: "POST",
         headers: { "Content-type": "application/json" },
         body: JSON.stringify(formData),
