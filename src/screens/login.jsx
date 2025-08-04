@@ -14,7 +14,7 @@ export default function LoginPage() {
     try {
       // console.log("Sending login request:", credentials); // Debug log
 
-      await axios.post("http://localhost:5000/api/login", credentials, {
+      await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/login`, credentials, {
         withCredentials: true,
         headers: { "Content-Type": "application/json" },
       });

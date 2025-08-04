@@ -16,7 +16,7 @@ dotenv.config();
 const app = express();
 
 app.use(cors({
-  origin: "http://localhost:3000",
+  origin: "https://agrosearch.onrender.com",
   credentials: true
 }));
 

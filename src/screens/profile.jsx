@@ -7,7 +7,7 @@ export default function ProfilePage() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch("http://localhost:5000/api/profile", {
+        const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/profile`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -34,7 +34,7 @@ export default function ProfilePage() {
   async function handleUpdate(e) {
     e.preventDefault();
     try {
-      const response = await fetch("http://localhost:5000/api/update-profile", {
+      const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/update-profile`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

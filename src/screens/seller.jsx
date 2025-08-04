@@ -27,7 +27,7 @@ export default function SellerPage() {
       data.append("price", formData.price);
       images.forEach((image) => data.append("images", image));
 
-      const response = await fetch("http://localhost:5000/api/sell", {
+      const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/sell`, {
         method: "POST",
         credentials: "include",
         body: data,

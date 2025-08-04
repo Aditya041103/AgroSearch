@@ -20,7 +20,7 @@ export default function BuyerPage() {
     e.preventDefault();
     try {
       const response = await fetch(
-        `http://localhost:5000/api/buy?crop=${searchData.crop}&quantity=${searchData.quantity}`,
+        `${import.meta.env.VITE_BACKEND_URL}/api/buy?crop=${searchData.crop}&quantity=${searchData.quantity}`,
         {
           method: "GET",
           headers: {
@@ -40,7 +40,7 @@ export default function BuyerPage() {
     try {
       const amount = seller.price * searchData.quantity;
       const orderResponse = await fetch(
-        "http://localhost:5000/api/create-order",
+        `${import.meta.env.VITE_BACKEND_URL}/api/create-order`,
         {
           method: "POST",
           headers: {
@@ -59,7 +59,7 @@ export default function BuyerPage() {
         description: `Purchase of ${seller.crop}`,
         order_id: order.id,
         handler: async () => {
-          await fetch("http://localhost:5000/api/complete-order", {
+          await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/complete-order`, {
             method: "POST",
             headers: { "Content-type": "application/json" },
             body: JSON.stringify({

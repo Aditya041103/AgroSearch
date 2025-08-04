@@ -9,7 +9,7 @@ export default function InfoPage() {
     if (!cropName.trim()) return alert("Please select a crop");
 
     try {
-      const response = await fetch(`http://localhost:5000/api/details?crop=${encodeURIComponent(cropName)}`)
+      const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/details?crop=${encodeURIComponent(cropName)}`)
         .then(res => res.json())
         .catch(err => console.log("Error fetching data:", err));
       setData(response);

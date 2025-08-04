@@ -7,7 +7,7 @@ export default function MarketPage() {
 
   useEffect(() => {
     const fetchAuth = async () => {
-      const response = await fetch("http://localhost:5000/api/checkAuth", {
+      const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/checkAuth`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",

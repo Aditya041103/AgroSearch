@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 
 
 const handleSignOut = async () => {
-  const response = await fetch("http://localhost:5000/api/logout", {
+  const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/logout`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

@@ -5,7 +5,7 @@ const SchemePage = () => {
 
   useEffect(() => {
     const fetchSchemes = async () => {
-      const response = await fetch("http://localhost:5000/api/schemes")
+      const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/schemes`)
         .then((res) => res.json())
         .then((data) => setSchemes(data))
         .catch((error) => console.error("Error fetching data:", error));

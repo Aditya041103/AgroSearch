@@ -18,7 +18,7 @@ export default function SignupPage() {
   const handleSignup = async (e) => {
     e.preventDefault();
     try {
-      const res = await fetch("http://localhost:5000/api/signup", {
+      const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/signup`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
