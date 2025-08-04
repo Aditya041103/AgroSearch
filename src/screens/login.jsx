@@ -12,16 +12,12 @@ export default function LoginPage() {
 
   const handleLogin = async () => {
     try {
-      console.log("Sending login request:", credentials); // Debug log
+      // console.log("Sending login request:", credentials); // Debug log
 
-      await axios.post(
-        "https://agrosearch-backend.onrender.com/api/login",
-        credentials,
-        {
-          withCredentials: true,
-          headers: { "Content-Type": "application/json" }
-        }
-      );
+      await axios.post("http://localhost:5000/api/login", credentials, {
+        withCredentials: true,
+        headers: { "Content-Type": "application/json" },
+      });
 
       navigate("/");
     } catch (error) {

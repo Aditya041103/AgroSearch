@@ -12,7 +12,7 @@ const PaymentComponent = ({ amount }) => {
   }, []);
 
   const handlePayment = async () => {
-    const response = await fetch("https://agrosearch-backend.onrender.com/api/create-order", {
+    const response = await fetch("http://localhost:5000/api/create-order", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ amount, currency: "INR" }),
@@ -28,8 +28,10 @@ const PaymentComponent = ({ amount }) => {
       description: "Payment for Order",
       order_id: order.id,
       handler: (response) => {
-        alert(`Payment successful! Payment ID: ${response.razorpay_payment_id}`);
-      }
+        alert(
+          `Payment successful! Payment ID: ${response.razorpay_payment_id}`
+        );
+      },
     };
 
     const rzp = new window.Razorpay(options);

@@ -1,0 +1,23 @@
+AgroSearch is an agriculture-focused platform designed to support farmers with data-driven insights, market opportunities, and government resources. The platform provides multiple features to improve productivity, access, and decision-making in agriculture.
+
+Key Features:
+
+1. Yield Prediction
+AgroSearch uses a machine learning model to predict crop yield based on user inputs such as crop type, location, season, rainfall, fertilizer usage, and other conditions. This helps farmers plan their cultivation more effectively.
+
+2. Crop Information
+This section provides detailed information about different crops including cropping season, climate requirements, soil types, and ideal cultivation conditions. It is useful for both experienced and new farmers.
+
+3. Market
+AgroSearch features a marketplace where farmers can buy and sell crops. The market is divided into:
+- Buyer Section: Allows users to browse available crops and contact sellers.
+- Seller Section: Enables farmers to list their crops, set prices, and connect with buyers.
+
+4. Disease Prediction
+Farmers can upload images of diseased crops, and AgroSearch uses AI models to predict the type of disease. This assists in early diagnosis and prevention of crop damage.
+
+5. Government Schemes
+AgroSearch lists various agriculture-related schemes provided by the government. These schemes are available in local languages to make them accessible to farmers who may face language barriers.
+
+6. User Profile and History
+Each user has a personal profile with access to their crop submissions, transaction history, and prediction records.
