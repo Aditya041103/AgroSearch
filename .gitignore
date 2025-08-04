@@ -12,7 +12,8 @@ dist
 dist-ssr
 *.local
 venv
-# Editor directories and files
+venv_new
+# Edi_tor directories and files
 .vscode/*
 !.vscode/extensions.json
 .idea
