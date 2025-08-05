@@ -15,16 +15,33 @@ import ChatBot from "./components/ChatBot.jsx";
 import { useState } from "react";
 
 function getName(key) {
-  const value = `; ${document.cookie}`;
-  const parts = value.split(`; ${key}=`);
-  const decodedValue = decodeURIComponent(parts.pop().split(";")[0]);
-  return decodedValue.split(" ")[0];
+  try {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${key}=`);
+    
+    // Check if the cookie exists
+    if (parts.length < 2) {
+      return null;
+    }
+    
+    const cookieValue = parts.pop().split(";")[0];
+    const decodedValue = decodeURIComponent(cookieValue);
+    
+    // Check if decoded value exists and is not empty
+    if (!decodedValue || decodedValue === "undefined" || decodedValue.trim() === "") {
+      return null;
+    }
+    
+    return decodedValue.split(" ")[0];
+  } catch (error) {
+    console.error("Error getting cookie:", error);
+    return null;
+  }
 }
 
 
 function HomePage() {
   const [open, setOpen] = useState(false);
-
   return (
     <div className="relative min-h-screen w-full bg-black text-white overflow-hidden">
       {/* Navbar */}
