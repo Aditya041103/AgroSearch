@@ -22,7 +22,7 @@ export default function LoginPage() {
         },
         body: JSON.stringify(credentials)
       });
-
+      console.log("Login response:", response); // Debug log
       if (!response.ok) {
         const errorData = await response.json();
         throw new Error(errorData.error || "Login failed");

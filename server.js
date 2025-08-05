@@ -210,6 +210,7 @@ app.post("/api/signup", async (req, res) => {
 
 app.post("/api/login", async (req, res) => {
   try {
+    console.log("Login request received:", req.body);
     const { email, password } = req.body;
     const user = await User.findOne({ email });
 
