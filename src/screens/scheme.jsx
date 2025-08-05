@@ -20,7 +20,7 @@ const SchemePage = () => {
         Loading schemes...
       </p>
     );
-
+    console.log("outside")
   return (
     <div className="min-h-screen bg-gray-900 text-white py-12 px-4 sm:px-8 lg:px-20">
       <div className="max-w-6xl mx-auto bg-gray-800 p-8 rounded-2xl shadow-2xl">
