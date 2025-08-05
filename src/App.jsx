@@ -12,27 +12,34 @@ import HistoryPage from "./screens/history.jsx";
 import ProfilePage from "./screens/profile.jsx";
 import DiseasePrediction from "./screens/disease.jsx";
 import ChatBot from "./components/ChatBot.jsx";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 function getName(key) {
   try {
-    console.log("Getting cookie for key:");
+    console.log("Getting cookie for key:", key);
+    console.log("All cookies:", document.cookie);
     const value = `; ${document.cookie}`;
     const parts = value.split(`; ${key}=`);
-    
+
     // Check if the cookie exists
     if (parts.length < 2) {
       return null;
     }
-    
+
     const cookieValue = parts.pop().split(";")[0];
     const decodedValue = decodeURIComponent(cookieValue);
-    
+
     // Check if decoded value exists and is not empty
-    if (!decodedValue || decodedValue === "undefined" || decodedValue.trim() === "") {
+    if (
+      !decodedValue ||
+      decodedValue === "undefined" ||
+      decodedValue.trim() === ""
+    ) {
       return null;
     }
-    
+    console.log(decodedValue);
+    console.log(decodedValue.split(" ")[0]);
+
     return decodedValue.split(" ")[0];
   } catch (error) {
     console.error("Error getting cookie:", error);
@@ -40,9 +47,25 @@ function getName(key) {
   }
 }
 
-
 function HomePage() {
   const [open, setOpen] = useState(false);
+  const [userName, setUserName] = useState(null);
+
+  // Check for cookie on component mount and when it changes
+  useEffect(() => {
+    const checkCookie = () => {
+      const name = getName("name");
+      console.log("Checking cookie, found:", name);
+      setUserName(name);
+    };
+
+    checkCookie(); // Check immediately
+
+    // Optional: Check periodically for cookie changes
+    const interval = setInterval(checkCookie, 1000);
+    return () => clearInterval(interval);
+  }, []);
+
   return (
     <div className="relative min-h-screen w-full bg-black text-white overflow-hidden">
       {/* Navbar */}
@@ -61,7 +84,7 @@ function HomePage() {
           <Link to="/scheme" className="hover:text-green-300">
             Schemes
           </Link>
-          {getName("name") ? (
+          {userName ? (
             <ProfileDropdown />
           ) : (
             <Link
