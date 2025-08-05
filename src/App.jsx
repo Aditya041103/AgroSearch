@@ -16,6 +16,7 @@ import { useState } from "react";
 
 function getName(key) {
   try {
+    console.log("Getting cookie for key:");
     const value = `; ${document.cookie}`;
     const parts = value.split(`; ${key}=`);
     
