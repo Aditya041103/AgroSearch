@@ -16,12 +16,20 @@ dotenv.config();
 const app = express();
 
 app.use(cors({
-  origin: "https://agrosearch.onrender.com", // Temporary - allows all origins for testing
-  credentials: true
+  origin: [
+    "https://agrosearch.onrender.com",
+    "https://agrosearch-backend.onrender.com", // Add your backend domain too
+    "http://localhost:5173", // For local development
+    "http://localhost:3000"  // Alternative local port
+  ],
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'Cookie']
 }));
 
 app.use(express.json());
 app.use(cookieParser());
+app.options('*', cors());
 
 mongoose
   .connect(process.env.MONGO_URI)
