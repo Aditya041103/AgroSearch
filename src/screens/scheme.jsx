@@ -12,6 +12,7 @@ const SchemePage = () => {
         .catch((error) => console.error("Error fetching data:", error));
     };
     fetchSchemes();
+    console.log(schemes)
   }, []);
 
   if (schemes.length === 0)
