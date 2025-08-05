@@ -7,7 +7,7 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import Razorpay from "razorpay";
 import bodyParser from "body-parser";
-import {v2 as cloudinary} from "cloudinary";
+import { v2 as cloudinary } from "cloudinary";
 import multer from "multer";
 import fs from "fs";
 
@@ -16,7 +16,7 @@ dotenv.config();
 const app = express();
 
 app.use(cors({
-  origin: "https://agrosearch.onrender.com",
+  origin: "*", // Temporary - allows all origins for testing
   credentials: true
 }));
 
@@ -97,39 +97,39 @@ app.post("/api/create-order", async (req, res) => {
   try {
     const { amount } = req.body;
     const options = {
-      amount: amount * 10, 
+      amount: amount * 10,
       currency: "INR",
       receipt: `receipt_${Date.now()}`,
     };
 
     const order = await razorpay.orders.create(options);
-    res.status(200).json({ success: true, order:order });
+    res.status(200).json({ success: true, order: order });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
   }
 });
 
-const upload=multer({dest:"temp/"})
+const upload = multer({ dest: "temp/" })
 
-app.post("/api/sell",upload.array('images',5), async (req, res) => {
-  const { crop, quantity, price}= req.body;
+app.post("/api/sell", upload.array('images', 5), async (req, res) => {
+  const { crop, quantity, price } = req.body;
   const user_id = req.cookies.user_id;
-  const imageURLS=[]
+  const imageURLS = []
   try {
-    for (const file of req.files){
-    const result=await cloudinary.uploader.upload(file.path)
-    imageURLS.push(result.secure_url)
-    fs.unlinkSync(file.path)
-  } 
-  const newSale = new Seller({
-    crop,
-    quantity,
-    price,
-    images: imageURLS,
-    user_id
-  });
-  await newSale.save();
-  res.status(200).json({ message: "Crop added successfully!" });
+    for (const file of req.files) {
+      const result = await cloudinary.uploader.upload(file.path)
+      imageURLS.push(result.secure_url)
+      fs.unlinkSync(file.path)
+    }
+    const newSale = new Seller({
+      crop,
+      quantity,
+      price,
+      images: imageURLS,
+      user_id
+    });
+    await newSale.save();
+    res.status(200).json({ message: "Crop added successfully!" });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Internal server error!" });
@@ -156,7 +156,7 @@ app.get("/api/details", async (req, res) => {
     if (!crop) {
       return res.status(400).json({ error: "Crop name is required" });
     }
-    const details = await Info.findOne({ name: crop});
+    const details = await Info.findOne({ name: crop });
     if (!details) {
       return res.status(404).json({ error: "Crop not found" });
     }
@@ -215,7 +215,7 @@ app.post("/api/login", async (req, res) => {
       console.log("Password mismatch for user:", email);
       return res.status(401).json({ error: "Invalid credentials" });
     }
-    res.cookie('user_id',user.id)
+    res.cookie('user_id', user.id)
     res.cookie("name", user.name);
     res.cookie("email", user.email);
     res.status(200).json({ message: "Login successful" });
@@ -230,7 +230,7 @@ app.post("/api/login", async (req, res) => {
 app.post("/api/complete-order", async (req, res) => {
   try {
     console.log(req.body);
-    const { seller_id, quantity,crop,amount } = req.body;
+    const { seller_id, quantity, crop, amount } = req.body;
     const buyer_id = req.cookies.user_id;
     const seller = await Seller.findById(seller_id);
     if (!seller) {
@@ -250,15 +250,15 @@ app.post("/api/complete-order", async (req, res) => {
 
     res.status(200).json({ message: "Crop bought successfully!" });
   } catch (err) {
-    res.status(500).json({ message: "Internal server error!",err});
+    res.status(500).json({ message: "Internal server error!", err });
   }
 });
-app.get("/api/history",async(req,res)=>{
-  try{
-    const user_id=req.cookies.user_id;
-    const history =await History.find({ buyer_id: user_id })
+app.get("/api/history", async (req, res) => {
+  try {
+    const user_id = req.cookies.user_id;
+    const history = await History.find({ buyer_id: user_id })
     return res.status(200).json(history);
-  }catch(err){
+  } catch (err) {
     console.error("Error fetching history:", err);
     return res.status(500).json({ message: "Internal server error!" });
   }
