@@ -16,7 +16,7 @@ dotenv.config();
 const app = express();
 
 app.use(cors({
-  origin: "*", // Temporary - allows all origins for testing
+  origin: "https://agrosearch.onrender.com", // Temporary - allows all origins for testing
   credentials: true
 }));
 
