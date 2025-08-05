@@ -4,6 +4,7 @@ const SchemePage = () => {
   const [schemes, setSchemes] = useState([]);
 
   useEffect(() => {
+    console.log(1)
     const fetchSchemes = async () => {
       const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/schemes`)
         .then((res) => res.json())
