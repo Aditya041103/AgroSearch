@@ -12,22 +12,30 @@ export default function LoginPage() {
 
   const handleLogin = async () => {
     try {
-      // console.log("Sending login request:", credentials); // Debug log
+      console.log("Sending login request:", credentials); // Debug log
 
-      await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/login`, credentials, {
-        withCredentials: true,
-        headers: { "Content-Type": "application/json" },
+      const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/login`, {
+        method: "POST",
+        credentials: "include", // equivalent to withCredentials: true
+        headers: { 
+          "Content-Type": "application/json" 
+        },
+        body: JSON.stringify(credentials)
       });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || "Login failed");
+      }
 
       navigate("/");
     } catch (error) {
-      console.error("Login failed:", error.response?.data || error);
+      console.error("Login failed:", error);
       alert(
-        "Login failed! " + (error.response?.data?.error || "Unknown error")
+        "Login failed! " + (error.message || "Unknown error")
       );
     }
   };
-
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-green-50 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full bg-white rounded-2xl shadow-2xl p-8 space-y-8">
